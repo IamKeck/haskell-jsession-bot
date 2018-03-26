@@ -1,0 +1,5 @@
+.stack-work/
+haskell-jsession-bot.cabal
+*~
+.idea
+*.iml
