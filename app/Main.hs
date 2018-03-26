@@ -33,6 +33,21 @@ handler d = case tweet of
   where
     tweet = d >>= HM.lookup "text" >>= takeString
 
+replyHandler :: Handler
+replyHandler d = do
+  case reply_text of
+    Just s -> putStrLn s
+    Nothing -> return ()
+    where
+      reply_text = do
+        obj <- d
+        screen_name <- HM.lookup "in_reply_to_screen_name" obj >>= takeString
+        tweet <- HM.lookup "text" obj >>= takeString
+        if screen_name == name then return () else Nothing
+        return $ "reply!!!! tweet:" <> tweet
+
+
+
 splitter :: ConduitM B.ByteString B.ByteString IO ()
 splitter = inner "" where
   inner buf = do
@@ -61,7 +76,7 @@ main :: IO ()
 main = do
   let url = "https://userstream.twitter.com/1.1/user.json"
   let param = [("replies", "all")]
-  let handlers = [handler]
+  let handlers = [handler, replyHandler]
   key <- TwitterKey <$> (getEnv "CK") <*> (getEnv "CS") <*> (getEnv "AT") <*> (getEnv "AS")
   request <- createRequest False url param [] key
   httpSink request $ \res -> splitter .| (sink handlers res)
