@@ -17,16 +17,17 @@ import Data.Aeson (decode)
 import Data.Aeson.Types
 import qualified Data.Text as T
 
-handler :: B.ByteString -> IO ()
+type Handler = Maybe Object -> IO ()
+
+handler :: Handler
 handler d = case tweet of
-  Nothing -> print $ "not a tweet: "  <> d
+  Nothing -> print $ "not a tweet: "  <> show d
   Just t -> putStrLn $ "tweet:" <> T.unpack t
   where
-    lazy_data = LB.fromStrict d
     take_string v = case v of
       String s -> Just s
       otherwise -> Nothing
-    tweet = (decode lazy_data :: Maybe Object) >>= HM.lookup "text" >>= take_string
+    tweet = d >>= HM.lookup "text" >>= take_string
 
 splitter :: ConduitM B.ByteString B.ByteString IO ()
 splitter = inner "" where
@@ -38,16 +39,16 @@ splitter = inner "" where
         (remaining, "") -> inner remaining
         (matched, remaining) -> yield matched >> inner (B.drop 2 remaining)
 
-sink :: (Monad m, MonadIO m) => (B.ByteString -> IO ()) -> Response () -> ConduitM B.ByteString Void m ()
+sink :: (Monad m, MonadIO m) => Handler -> Response () -> ConduitM B.ByteString Void m ()
 sink handler response =
   if getResponseStatusCode response > 300 then
     liftIO $ print "error"
   else do
     b <- await
     case b of
-      Just t ->
-          (liftIO $ handler t) >> sink handler response
       Nothing -> return ()
+      Just d -> (liftIO . handler . decode . LB.fromStrict $ d) >> sink handler response
+
 
 main :: IO ()
 main = do
