@@ -16,12 +16,15 @@ import qualified Data.HashMap.Strict as HM
 import Data.Aeson (decode)
 import Data.Aeson.Types
 import qualified Data.Text as T
+import Data.Foldable (forM_)
 
 type Handler = Maybe Object -> IO ()
 
+name = "Keck_init"
+
 handler :: Handler
 handler d = case tweet of
-  Nothing -> print $ "not a tweet: "  <> show d
+  Nothing -> return ()
   Just t -> putStrLn $ "tweet:" <> T.unpack t
   where
     take_string v = case v of
@@ -39,24 +42,28 @@ splitter = inner "" where
         (remaining, "") -> inner remaining
         (matched, remaining) -> yield matched >> inner (B.drop 2 remaining)
 
-sink :: (Monad m, MonadIO m) => Handler -> Response () -> ConduitM B.ByteString Void m ()
-sink handler response =
+sink :: (Monad m, MonadIO m) => [Handler] -> Response () -> ConduitM B.ByteString Void m ()
+sink handlers response =
   if getResponseStatusCode response > 300 then
     liftIO $ print "error"
   else do
     b <- await
     case b of
       Nothing -> return ()
-      Just d -> (liftIO . handler . decode . LB.fromStrict $ d) >> sink handler response
+      Just d ->
+        let
+          obj = decode . LB.fromStrict $ d
+        in (liftIO $ forM_ handlers (\h -> h obj)) >> sink handlers response
 
 
 main :: IO ()
 main = do
   let url = "https://userstream.twitter.com/1.1/user.json"
   let param = [("replies", "all")]
+  let handlers = [handler]
   key <- TwitterKey <$> (getEnv "CK") <*> (getEnv "CS") <*> (getEnv "AT") <*> (getEnv "AS")
   request <- createRequest False url param [] key
-  httpSink request $ \res -> splitter .| (sink handler res)
+  httpSink request $ \res -> splitter .| (sink handlers res)
   print "done"
 
 
