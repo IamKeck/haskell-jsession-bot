@@ -22,15 +22,16 @@ type Handler = Maybe Object -> IO ()
 
 name = "Keck_init"
 
+takeString :: Value -> Maybe String
+takeString (String s) = Just . T.unpack $ s
+takeString _ = Nothing
+
 handler :: Handler
 handler d = case tweet of
   Nothing -> return ()
-  Just t -> putStrLn $ "tweet:" <> T.unpack t
+  Just t -> putStrLn $ "tweet:" <> t
   where
-    take_string v = case v of
-      String s -> Just s
-      otherwise -> Nothing
-    tweet = d >>= HM.lookup "text" >>= take_string
+    tweet = d >>= HM.lookup "text" >>= takeString
 
 splitter :: ConduitM B.ByteString B.ByteString IO ()
 splitter = inner "" where
