@@ -1,5 +1,7 @@
+{-# LANGUAGE OverloadedStrings #-}
 import Test.Hspec
 import OAuth
+import Songs
 
 consumerSecret = "kAcSOqF21Fu85e7zjz7ZN2U4ZRhfV3WpwPAoE3Z7kBw"
 tokenSecret = "LswwdoUaIvS8ltyTt5jkRh4J50vUPVVHtR2YPi5kE"
@@ -41,3 +43,11 @@ main = hspec $ do
         auth_base = createAuthBase key nonce timestamp
       in
         createAuthHeader auth_base signature `shouldBe` authHeader
+  describe "createSongs" $
+    it "standard" $
+      let
+        songs_byte = "[{\"name\": \"songA\", \"rate\": 1}, {\"name\": \"songB\", \"rate\": 2}]"
+        songs_ans = Right [Song "songA" 1, Song "songB" 2]
+      in
+        createSongs songs_byte `shouldBe` songs_ans
+

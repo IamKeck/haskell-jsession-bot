@@ -33,6 +33,7 @@ library:
     - base64-bytestring
     - http-conduit
     - mtl
+    - aeson
 
 executables:
   haskell-jsession-bot-exe:
