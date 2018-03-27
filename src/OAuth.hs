@@ -72,6 +72,9 @@ createRequest is_post url query_param post_param key = do
         let bs_query_param = [(CB.pack f, Just . CB.pack $ s) | (f, s) <- query_param]
         modify $ addRequestHeader "Authorization" $ CB.pack auth_header
         modify $ setRequestQueryString bs_query_param
-
+        if is_post then
+          modify $ setRequestBodyURLEncoded [(CB.pack f, CB.pack $ s) | (f, s) <- post_param]
+        else
+          return ()
 
 
