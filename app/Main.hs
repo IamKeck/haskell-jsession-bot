@@ -18,7 +18,7 @@ import Data.Aeson.Types
 import qualified Data.Text as T
 import Data.Foldable (forM_)
 
-type Handler = Maybe Object -> IO ()
+type Handler = TwitterKey ->  Maybe Object -> IO ()
 
 name = "Keck_init"
 
@@ -27,14 +27,14 @@ takeString (String s) = Just . T.unpack $ s
 takeString _ = Nothing
 
 handler :: Handler
-handler d = case tweet of
+handler _ d = case tweet of
   Nothing -> return ()
   Just t -> putStrLn $ "tweet:" <> t
   where
     tweet = d >>= HM.lookup "text" >>= takeString
 
 replyHandler :: Handler
-replyHandler d = do
+replyHandler _ d = do
   case reply_text of
     Just s -> putStrLn s
     Nothing -> return ()
@@ -58,8 +58,8 @@ splitter = inner "" where
         (remaining, "") -> inner remaining
         (matched, remaining) -> yield matched >> inner (B.drop 2 remaining)
 
-sink :: (Monad m, MonadIO m) => [Handler] -> Response () -> ConduitM B.ByteString Void m ()
-sink handlers response =
+sink :: (Monad m, MonadIO m) => TwitterKey ->  [Handler] -> Response () -> ConduitM B.ByteString Void m ()
+sink key handlers response =
   if getResponseStatusCode response > 300 then
     liftIO $ print "error"
   else do
@@ -69,7 +69,7 @@ sink handlers response =
       Just d ->
         let
           obj = decode . LB.fromStrict $ d
-        in (liftIO $ forM_ handlers (\h -> h obj)) >> sink handlers response
+        in (liftIO $ forM_ handlers (\h -> h key obj)) >> sink key handlers response
 
 
 main :: IO ()
@@ -79,7 +79,7 @@ main = do
   let handlers = [handler, replyHandler]
   key <- TwitterKey <$> (getEnv "CK") <*> (getEnv "CS") <*> (getEnv "AT") <*> (getEnv "AS")
   request <- createRequest False url param [] key
-  httpSink request $ \res -> splitter .| (sink handlers res)
+  httpSink request $ \res -> splitter .| (sink key handlers res)
   print "done"
 
 
