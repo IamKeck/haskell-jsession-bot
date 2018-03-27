@@ -17,6 +17,7 @@ import Data.Aeson (decode)
 import Data.Aeson.Types
 import qualified Data.Text as T
 import Data.Foldable (forM_)
+import Operation
 
 type Handler = TwitterKey ->  Maybe Object -> IO ()
 
@@ -46,6 +47,23 @@ replyHandler _ d = do
         if screen_name == name then return () else Nothing
         return $ "reply!!!! tweet:" <> tweet
 
+followBackHandler :: Handler
+followBackHandler key d = do
+  case follower of
+    Just s -> (putStrLn $ "followed!:" <> s) >> followUser key s >> return ()
+    Nothing -> return ()
+    where
+      follower = do
+        obj <- d
+        event_name <- HM.lookup "event" obj >>= takeString
+        if event_name == "follow" then Just () else Nothing
+        followed_user <- case HM.lookup "target" obj of
+          Just (Object o) -> HM.lookup "screen_name" o >>= takeString
+          _ -> Nothing
+        if followed_user == name then Just () else Nothing
+        case HM.lookup "source" obj of
+          Just (Object o) -> HM.lookup "id_str" o >>= takeString
+          _ -> Nothing
 
 
 splitter :: ConduitM B.ByteString B.ByteString IO ()
@@ -76,8 +94,8 @@ main :: IO ()
 main = do
   let url = "https://userstream.twitter.com/1.1/user.json"
   let param = [("replies", "all")]
-  let handlers = [handler, replyHandler]
   key <- TwitterKey <$> (getEnv "CK") <*> (getEnv "CS") <*> (getEnv "AT") <*> (getEnv "AS")
+  let handlers = [handler, replyHandler, followBackHandler]
   request <- createRequest False url param [] key
   httpSink request $ \res -> splitter .| (sink key handlers res)
   print "done"
