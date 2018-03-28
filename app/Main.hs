@@ -22,13 +22,13 @@ import Data.Maybe
 import Control.Monad.Reader
 import qualified Songs as S
 
-data HandlerProp = HandlerProp {getData :: Maybe Object, getKey :: TwitterKey,
+data HandlerProp = HandlerProp {getData :: Object, getKey :: TwitterKey,
                                 getSongBase :: S.SongBase}
 type Handler = ReaderT HandlerProp IO ()
 
 name = "Keck_init"
 
-askData :: ReaderT HandlerProp IO (Maybe Object)
+askData :: ReaderT HandlerProp IO (Object)
 askData =  getData <$> ask
 
 askKey :: ReaderT HandlerProp IO (TwitterKey)
@@ -40,7 +40,7 @@ askSongBase =  getSongBase <$> ask
 handler :: Handler
 handler = do
   d <- askData
-  let tweet = d >>= HM.lookup "text" >>= takeString
+  let tweet = Just d >>= HM.lookup "text" >>= takeString
   case tweet of
     Nothing -> return ()
     Just t -> liftIO . putStrLn $ "tweet:" <> t
@@ -83,8 +83,7 @@ followBackHandler = do
               >> return ()
     Nothing -> return ()
     where
-      follower d = do
-        obj <- d
+      follower obj = do
         event_name <- HM.lookup "event" obj >>= takeString
         if event_name == "follow" then Just () else Nothing
         followed_user <- case HM.lookup "target" obj of
@@ -116,11 +115,14 @@ sink key song_base handlers response =
     case b of
       Nothing -> return ()
       Just d ->
-        let
-          obj = decode . LB.fromStrict $ d
-          prop = HandlerProp obj key song_base
-        in (liftIO $ forM_ handlers (\h -> runReaderT h prop)) >> sink key song_base handlers response
-
+          case decode . LB.fromStrict $ d of
+            Just o ->
+              let
+                prop = HandlerProp o key song_base
+              in
+                (liftIO $ forM_ handlers (\h -> runReaderT h prop)) >>
+                sink key song_base handlers response
+            _ -> sink key song_base handlers response
 
 main :: IO ()
 main = do
