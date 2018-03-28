@@ -49,30 +49,19 @@ replyHandler :: Handler
 replyHandler = do
   d <- askData
   key <- askKey
-  case reply_text d of
-    Just s -> liftIO . putStrLn $ s
-    Nothing -> return ()
-  case d of
-    Just obj ->
-      if is_reply_to_me d then
-        (liftIO $ reply key obj "got replied") >> return ()
-      else
-        return ()
-    Nothing -> return ()
+  if is_reply_to_me d then do
+    chosen_song <- askSongBase >>= liftIO . S.chooseSongIO
+    (liftIO . reply key d $ "次は" ++ chosen_song ++ "なんていかがでしょうか")
+    return ()
+  else
+    return ()
 
-    where
-      is_reply_to_me_m d = do
-        obj <- d
-        screen_name <- HM.lookup "in_reply_to_screen_name" obj >>= takeString
-        if screen_name == name then return True else return False
+  where
+    is_reply_to_me_m obj = do
+      screen_name <- HM.lookup "in_reply_to_screen_name" obj >>= takeString
+      if screen_name == name then return True else return False
 
-      is_reply_to_me = fromMaybe False . is_reply_to_me_m
-
-      reply_text d = do
-        obj <- d
-        tweet <- HM.lookup "text" obj >>= takeString
-        if is_reply_to_me d then return () else Nothing
-        return $ "reply!!!! tweet:" <> tweet
+    is_reply_to_me = fromMaybe False . is_reply_to_me_m
 
 followBackHandler :: Handler
 followBackHandler = do
