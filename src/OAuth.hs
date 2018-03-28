@@ -4,7 +4,7 @@ module OAuth where
 import Network.URI.Encode (encode)
 import Data.Time.Clock.POSIX (getPOSIXTime)
 import System.Random (random, randomRIO)
-import Data.List (sortOn, intercalate)
+import Data.List (sortOn, intercalate, nubBy)
 import Data.HMAC
 import qualified Data.ByteString as B
 import qualified Data.ByteString.Char8 as CB
@@ -63,7 +63,7 @@ createRequest :: Bool -> String -> [(String, String)]
                       -> [(String, String)] -> TwitterKey -> IO Request
 createRequest is_post url query_param post_param key = do
     auth_base <- createAuthBaseDefault key
-    let param = query_param ++ post_param
+    let param = nubBy (\x y -> fst x == fst y) $ query_param ++ post_param
     let signature = createSignature is_post url param auth_base $ createHmacKey key
     let auth_header = createAuthHeader auth_base signature
     execState (setRequest auth_header) <$> parseRequest url
