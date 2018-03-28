@@ -92,6 +92,8 @@ sink key handlers response =
 
 main :: IO ()
 main = do
+  json_path <- head <$> getArgs
+  print json_path
   let url = "https://userstream.twitter.com/1.1/user.json"
   let param = [("replies", "all")]
   key <- TwitterKey <$> (getEnv "CK") <*> (getEnv "CS") <*> (getEnv "AT") <*> (getEnv "AS")
@@ -99,5 +101,6 @@ main = do
   request <- createRequest False url param [] key
   httpSink request $ \res -> splitter .| (sink key handlers res)
   print "done"
+
 
 
