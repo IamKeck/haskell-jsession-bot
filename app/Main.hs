@@ -26,7 +26,7 @@ data HandlerProp = HandlerProp {getData :: Object, getKey :: TwitterKey,
                                 getSongBase :: S.SongBase}
 type Handler = ReaderT HandlerProp IO ()
 
-name = "Keck_init"
+name = "jsession_bot"
 
 askData :: ReaderT HandlerProp IO (Object)
 askData =  getData <$> ask
