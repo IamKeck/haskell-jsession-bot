@@ -1,0 +1,665 @@
+[
+    { "name": "AFTERNOON IN PARIS",
+      "rate": 3
+    }, 
+    { "name": "AIREGIN",
+      "rate": 2
+    }, 
+    { "name": "ALICE IN WONDERLAND",
+      "rate": 4 
+    }, 
+    { "name": "ALL BLUES",
+      "rate": 3
+    }, 
+    { "name": "ALL OF ME",
+      "rate": 5
+    }, 
+    { "name": "ALL OF YOU",
+      "rate": 3
+    }, 
+    { "name": "ALL THE THINGS YOU ARE",
+      "rate": 5
+    }, 
+    { "name": "ALONE TOGETHER",
+      "rate": 5
+    }, 
+    { "name": "ANTHROPOLOGY",
+      "rate": 1
+    }, 
+    { "name": "APRIL IN PARIS",
+      "rate": 3
+    }, 
+    { "name": "AU PRIVAVE",
+      "rate": 1
+    }, 
+    { "name": "AUTUMN IN NEW YORK",
+      "rate": 3
+    }, 
+    { "name": "AUTUMN LEAVES",
+      "rate": 5
+    }, 
+    { "name": "BAG'S GROOVE",
+      "rate": 1
+    }, 
+    { "name": "BEATRICE",
+      "rate": 3
+    }, 
+    { "name": "BEAUTIFUL LOVE",
+      "rate": 4
+    }, 
+    { "name": "BESSIE'S BLUES",
+      "rate": 2
+    }, 
+    { "name": "BILLIE'S BOUNCE",
+      "rate": 1
+    }, 
+    { "name": "BLACK NILE",
+      "rate": 2
+    }, 
+    { "name": "BLACK ORPHEUS",
+      "rate": 3
+    }, 
+    { "name": "BLUES BOSSA",
+      "rate": 4
+    }, 
+    { "name": "BLUE IN GREEN",
+      "rate": 1
+    }, 
+    { "name": "BLUE MONK",
+      "rate": 1
+    }, 
+    { "name": "BLUESETTE",
+      "rate": 3
+    }, 
+    { "name": "BODY AND SOUL",
+      "rate": 4
+    }, 
+    { "name": "BOLIVIA",
+      "rate": 3
+    }, 
+    { "name": "BUT NOT FOR ME",
+      "rate": 5
+    }, 
+    { "name": "BYE BYE BLACKBIRD",
+      "rate": 5
+    }, 
+    { "name": "C JAM BLUES",
+      "rate": 1
+    }, 
+    { "name": "CANDY",
+      "rate": 5
+    }, 
+    { "name": "CANTALOUPE ISLAND",
+      "rate": 4
+    }, 
+    { "name": "CARAVAN",
+      "rate": 3
+    }, 
+    { "name": "CHEROKEE",
+      "rate": 3
+    }, 
+    { "name": "CHERYL",
+      "rate": 1
+    }, 
+    { "name": "THE CHICKEN",
+      "rate": 3
+    }, 
+    { "name": "A CHILD IS BORN",
+      "rate": 2
+    }, 
+    { "name": "CLEOPATRA'S DREAM",
+      "rate": 2
+    }, 
+    { "name": "COME RAIN OR COME SHINE",
+      "rate": 4
+    }, 
+    { "name": "CON ALMA",
+      "rate": 2
+    }, 
+    { "name": "CONFIRMATION",
+      "rate": 5
+    }, 
+    { "name": "CORCOVADO",
+      "rate": 3
+    }, 
+    { "name": "CUTE",
+      "rate": 3
+    }, 
+    { "name": "DAAHOUD",
+      "rate": 2
+    }, 
+    { "name": "DAY BY DAY",
+      "rate": 2
+    }, 
+    { "name": "THE DAYS OF WINE AND ROSES",
+      "rate": 5
+    }, 
+    { "name": "DEAR OLD STOCKHOLD",
+      "rate": 4
+    }, 
+    { "name": "DOLPHION DANCE",
+      "rate": 3
+    }, 
+    { "name": "DONNA LEE",
+      "rate": 5
+    }, 
+    { "name": "DOXY",
+      "rate": 4
+    }, 
+    { "name": "EASY LIVING",
+      "rate": 1
+    }, 
+    { "name": "EMILY",
+      "rate": 1
+    }, 
+    { "name": "EVENRYTHING HAPPENS TO ME",
+      "rate": 1
+    }, 
+    { "name": "EVIDENCE",
+      "rate": 2
+    }, 
+    { "name": "FALL IN LOVE WITH LOVE",
+      "rate": 3
+    }, 
+    { "name": "FLY ME TO THE MOON",
+      "rate": 4
+    }, 
+    { "name": "A FOGGY DAY",
+      "rate": 3
+    }, 
+    { "name": "FOOTPRINTS",
+      "rate": 3
+    }, 
+    { "name": "FOREST FLOWER",
+      "rate": 1
+    }, 
+    { "name": "FOUR",
+      "rate": 4
+    }, 
+    { "name": "FOUR ON SIX",
+      "rate": 3
+    }, 
+    { "name": "FREDDIE THE FREELOADER",
+      "rate": 1
+    }, 
+    { "name": "GEORGIA ON MY MIND",
+      "rate": 3
+    }, 
+    { "name": "GIANT STEPS",
+      "rate": 2
+    }, 
+    { "name": "GIRL FROM IPANEMA",
+      "rate": 3
+    }, 
+    { "name": "GOOD BAIT",
+      "rate": 1
+    }, 
+    { "name": "GROOVIN' HIGH",
+      "rate": 1
+    }, 
+    { "name": "HAVE YOU MET MISS JONES?",
+      "rate": 3
+    }, 
+    { "name": "HERE'S THAT RAINY DAY",
+      "rate": 3
+    }, 
+    { "name": "HOT HOUSE",
+      "rate": 1
+    }, 
+    { "name": "HOW DEEP IS THE OCEAN",
+      "rate": 3
+    }, 
+    { "name": "HOW HIGH THE MOON",
+      "rate": 3
+    }, 
+    { "name": "HOW INSENSITIVE",
+      "rate": 2
+    }, 
+    { "name": "I CAN'T GET STARTED",
+      "rate": 1
+    }, 
+    { "name": "I CAN'T GIVE YOU ANYTHING BUT LOVE",
+      "rate": 2
+    }, 
+    { "name": "i concentrate on you",
+      "rate": 2
+    }, 
+    { "name": "i could write a book",
+      "rate": 2
+    }, 
+    { "name": "i didn't know what time it was",
+      "rate": 3
+    }, 
+    { "name": "i fall in love too easily",
+      "rate": 1
+    }, 
+    { "name": "i hear a rapsody",
+      "rate": 4
+    }, 
+    { "name": "i love you",
+      "rate": 2
+    }, 
+    { "name": "i mean you",
+      "rate": 3
+    }, 
+    { "name": "i remember clifford",
+      "rate": 2
+    }, 
+    { "name": "i remember you",
+      "rate": 2
+    }, 
+    { "name": "i should care",
+      "rate": 1
+    }, 
+    { "name": "i thought about you",
+      "rate": 1
+    }, 
+    { "name": "i'll close my eyes",
+      "rate": 4
+    }, 
+    { "name": "i'll remember april",
+      "rate": 3
+    }, 
+    { "name": "i'm old fashioned",
+      "rate": 2
+    }, 
+    { "name": "if i should lose you",
+      "rate": 4
+    }, 
+    { "name": "if i were a bell",
+      "rate": 5
+    }, 
+    { "name": "if you could see me now",
+      "rate": 2
+    }, 
+    { "name": "impressions",
+      "rate": 3
+    }, 
+    { "name": "in a mellow tone",
+      "rate": 4
+    }, 
+    { "name": "in a sentimental mood",
+      "rate": 3
+    }, 
+    { "name": "in your own sweet way",
+      "rate": 4
+    }, 
+    { "name": "inner urge",
+      "rate": 2
+    }, 
+    { "name": "interplay",
+      "rate": 1
+    }, 
+    { "name": "invitation",
+      "rate": 3
+    }, 
+    { "name": "israel",
+      "rate": 2
+    }, 
+    { "name": "it could happen to you",
+      "rate": 5
+    }, 
+    { "name": "i don't mean a thing",
+      "rate": 4
+    }, 
+    { "name": "it might as well be spring",
+      "rate": 1
+    }, 
+    { "name": "it's all right with me",
+      "rate": 1
+    }, 
+    { "name": "it's only a paper moon",
+      "rate": 3
+    }, 
+    { "name": "it's you or no one",
+      "rate": 1
+    }, 
+    { "name": "jor du",
+      "rate": 3
+    }, 
+    { "name": "joy spring",
+      "rate": 3
+    }, 
+    { "name": "just friends",
+      "rate": 4
+    }, 
+    { "name": "just one of those things",
+      "rate": 1
+    }, 
+    { "name": "killer joe",
+      "rate": 1
+    }, 
+    { "name": "lady bird",
+      "rate": 3
+    }, 
+    { "name": "lament",
+      "rate": 1
+    }, 
+    { "name": "left alone",
+      "rate": 1
+    }, 
+    { "name": "like someone in love",
+      "rate": 3
+    }, 
+    { "name": "little b's poem",
+      "rate": 1
+    }, 
+    { "name": "l-o-v-e",
+      "rate": 4
+    }, 
+    { "name": "love for sale",
+      "rate": 4
+    }, 
+    { "name": "love is here to stay",
+      "rate": 4
+    }, 
+    { "name": "love letters",
+      "rate": 1
+    }, 
+    { "name": "love come back to me",
+      "rate": 2
+    }, 
+    { "name": "lover man",
+      "rate": 1
+    }, 
+    { "name": "lullaby of birdland",
+      "rate": 3
+    }, 
+    { "name": "mack the knife",
+      "rate": 3
+    }, 
+    { "name": "maiden voyage",
+      "rate": 1
+    }, 
+    { "name": "milestones",
+      "rate": 1
+    }, 
+    { "name": "moanin'",
+      "rate": 4
+    }, 
+    { "name": "moment's notice",
+      "rate": 3
+    }, 
+    { "name": "mr. p.c.",
+      "rate": 3
+    }, 
+    { "name": "my favorite things",
+      "rate": 2
+    }, 
+    { "name": "my foolish heart",
+      "rate": 2
+    }, 
+    { "name": "my funny valentine",
+      "rate": 3
+    }, 
+    { "name": "my little suede shoes",
+      "rate": 5
+    }, 
+    { "name": "my romance",
+      "rate": 3
+    }, 
+    { "name": "naima",
+      "rate": 2
+    }, 
+    { "name": "nardis",
+      "rate": 3
+    }, 
+    { "name": "nica's dream",
+      "rate": 3
+    }, 
+    { "name": "night and day",
+      "rate": 3
+    }, 
+    { "name": "the night has a thousand eyes",
+      "rate": 2
+    }, 
+    { "name": "a night in tunisia",
+      "rate": 4
+    }, 
+    { "name": "now's the time",
+      "rate": 1
+    }, 
+    { "name": "old devil moon",
+      "rate": 1
+    }, 
+    { "name": "old folks",
+      "rate": 2
+    }, 
+    { "name": "oleo",
+      "rate": 5
+    }, 
+    { "name": "on a clear day",
+      "rate": 4
+    }, 
+    { "name": "on green dolpin street",
+      "rate": 5
+    }, 
+    { "name": "on the sunny side of the street",
+      "rate": 5
+    }, 
+    { "name": "once i loved",
+      "rate": 1
+    }, 
+    { "name": "one note samba",
+      "rate": 3
+    }, 
+    { "name": "ornithology",
+      "rate": 4
+    }, 
+    { "name": "out of nowhere",
+      "rate": 2
+    }, 
+    { "name": "over the rainbow",
+      "rate": 4
+    }, 
+    { "name": "peace",
+      "rate": 1
+    }, 
+    { "name": "pent-up house",
+      "rate": 1
+    }, 
+    { "name": "perdido",
+      "rate": 4
+    }, 
+    { "name": "polka dots and moonbeams",
+      "rate": 2
+    }, 
+    { "name": "prelude to a kiss",
+      "rate": 1
+    }, 
+    { "name": "recado bossa nova",
+      "rate": 4
+    }, 
+    { "name": "recorda me",
+      "rate": 4
+    }, 
+    { "name": "rhythm-a-ning",
+      "rate": 4
+    }, 
+    { "name": "round midnight",
+      "rate": 3
+    }, 
+    { "name": "samba de orfeu",
+      "rate": 3
+    }, 
+    { "name": "satin doll",
+      "rate": 5
+    }, 
+    { "name": "scrapple from the apple",
+      "rate": 5
+    }, 
+    { "name": "secret love",
+      "rate": 1
+    }, 
+    { "name": "seven steps to heaven",
+      "rate": 3
+    }, 
+    { "name": "the shadow of your smile",
+      "rate": 4
+    }, 
+    { "name": "shiny stokings",
+      "rate": 4
+    }, 
+    { "name": "smoke gets in your eyes",
+      "rate": 3
+    }, 
+    { "name": "so what",
+      "rate": 3
+    }, 
+    { "name": "softly as in a morning sinrise",
+      "rate": 5
+    }, 
+    { "name": "solar",
+      "rate": 2
+    }, 
+    { "name": "some other blues",
+      "rate": 1
+    }, 
+    { "name": "someday my prince will come",
+      "rate": 5
+    }, 
+    { "name": "someone to watch over me",
+      "rate": 2
+    }, 
+    { "name": "song for my father",
+      "rate": 4
+    }, 
+    { "name": "song is you",
+      "rate": 1
+    }, 
+    { "name": "sonnymoon for two",
+      "rate": 1
+    }, 
+    { "name": "sophistcated lady",
+      "rate": 1
+    }, 
+    { "name": "spain",
+      "rate": 4
+    }, 
+    { "name": "spring can really hang you up the most",
+      "rate": 1
+    }, 
+    { "name": "speak low",
+      "rate": 4
+    }, 
+    { "name": "st. thomas",
+      "rate": 5
+    }, 
+    { "name": "stable mates",
+      "rate": 3
+    }, 
+    { "name": "star eyes",
+      "rate": 3
+    }, 
+    { "name": "stardust",
+      "rate": 2
+    }, 
+    { "name": "stella by starlight",
+      "rate": 4
+    }, 
+    { "name": "stolen momets",
+      "rate": 3
+    }, 
+    { "name": "stomping at the savoy",
+      "rate": 1
+    }, 
+    { "name": "straight no chaser",
+      "rate": 1
+    }, 
+    { "name": "strollin'",
+      "rate": 1
+    }, 
+    { "name": "summertime",
+      "rate": 4
+    }, 
+    { "name": "take five",
+      "rate": 1
+    }, 
+    { "name": "take the a train",
+      "rate": 5
+    }, 
+    { "name": "tell me a bedtime story",
+      "rate": 3
+    }, 
+    { "name": "tenor madness",
+      "rate": 1
+    }, 
+    { "name": "there is no greater love",
+      "rate": 4
+    }, 
+    { "name": "there will never be another you",
+      "rate": 5
+    }, 
+    { "name": "up jumped spring",
+      "rate": 3
+    }, 
+    { "name": "very early",
+      "rate": 1
+    }, 
+    { "name": "walkin'",
+      "rate": 2
+    }, 
+    { "name": "waltz for debby",
+      "rate": 2
+    }, 
+    { "name": "watermelon man",
+      "rate": 4
+    }, 
+    { "name": "wave",
+      "rate": 4
+    }, 
+    { "name": "well you needn't",
+      "rate": 2
+    }, 
+    { "name": "what a difference a day make",
+      "rate": 1
+    }, 
+    { "name": "what are you doing the rest of your life?",
+      "rate": 2
+    }, 
+    { "name": "what's new",
+      "rate": 2
+    }, 
+    { "name": "when i fallin love",
+      "rate": 3
+    }, 
+    { "name": "when sunny gets blue",
+      "rate": 1
+    }, 
+    { "name": "when you wish upon a star",
+      "rate": 4
+    }, 
+    { "name": "whisper not",
+      "rate": 4
+    }, 
+    { "name": "woody'n you",
+      "rate": 2
+    }, 
+    { "name": "work song",
+      "rate": 4
+    }, 
+    { "name": "yardbird suite",
+      "rate": 5
+    }, 
+    { "name": "yes or no",
+      "rate": 3
+    }, 
+    { "name": "yesterdays",
+      "rate": 3
+    }, 
+    { "name": "you and the night and the music",
+      "rate": 4
+    }, 
+    { "name": "you don't know what love is",
+      "rate": 3
+    }, 
+    { "name": "you must belive in spring",
+      "rate": 1
+    }, 
+    { "name": "you stepped out of a dream",
+      "rate": 1
+    }, 
+    { "name": "you'd be so nice to come home to",
+      "rate": 5
+    }
+]
