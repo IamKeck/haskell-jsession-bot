@@ -19,52 +19,71 @@ import qualified Data.Text as T
 import Data.Foldable (forM_)
 import Operation
 import Data.Maybe
+import Control.Monad.Reader
+import qualified Songs as S
 
-type Handler = TwitterKey ->  Maybe Object -> IO ()
+data HandlerProp = HandlerProp {getData :: Maybe Object, getKey :: TwitterKey,
+                                getSongBase :: S.SongBase}
+type Handler = ReaderT HandlerProp IO ()
 
 name = "Keck_init"
 
+askData :: ReaderT HandlerProp IO (Maybe Object)
+askData =  getData <$> ask
+
+askKey :: ReaderT HandlerProp IO (TwitterKey)
+askKey =  getKey <$> ask
+
+askSongBase :: ReaderT HandlerProp IO (S.SongBase)
+askSongBase =  getSongBase <$> ask
+
 handler :: Handler
-handler _ d = case tweet of
-  Nothing -> return ()
-  Just t -> putStrLn $ "tweet:" <> t
-  where
-    tweet = d >>= HM.lookup "text" >>= takeString
+handler = do
+  d <- askData
+  let tweet = d >>= HM.lookup "text" >>= takeString
+  case tweet of
+    Nothing -> return ()
+    Just t -> liftIO . putStrLn $ "tweet:" <> t
 
 replyHandler :: Handler
-replyHandler key d = do
-  case reply_text of
-    Just s -> putStrLn s
+replyHandler = do
+  d <- askData
+  key <- askKey
+  case reply_text d of
+    Just s -> liftIO . putStrLn $ s
     Nothing -> return ()
   case d of
     Just obj ->
-      if is_reply_to_me then
-        reply key obj "got replied" >> return ()
+      if is_reply_to_me d then
+        (liftIO $ reply key obj "got replied") >> return ()
       else
         return ()
     Nothing -> return ()
 
     where
-      is_reply_to_me_m =  do
+      is_reply_to_me_m d = do
         obj <- d
         screen_name <- HM.lookup "in_reply_to_screen_name" obj >>= takeString
         if screen_name == name then return True else return False
 
-      is_reply_to_me = fromMaybe False is_reply_to_me_m
+      is_reply_to_me = fromMaybe False . is_reply_to_me_m
 
-      reply_text = do
+      reply_text d = do
         obj <- d
         tweet <- HM.lookup "text" obj >>= takeString
-        if is_reply_to_me then return () else Nothing
+        if is_reply_to_me d then return () else Nothing
         return $ "reply!!!! tweet:" <> tweet
 
 followBackHandler :: Handler
-followBackHandler key d = do
-  case follower of
-    Just s -> (putStrLn $ "followed!:" <> s) >> followUser key s >> return ()
+followBackHandler = do
+  d <- askData
+  key <- askKey
+  case follower d of
+    Just s -> (liftIO . putStrLn $ "followed!:" <> s) >> (liftIO $ followUser key s)
+              >> return ()
     Nothing -> return ()
     where
-      follower = do
+      follower d = do
         obj <- d
         event_name <- HM.lookup "event" obj >>= takeString
         if event_name == "follow" then Just () else Nothing
@@ -87,8 +106,9 @@ splitter = inner "" where
         (remaining, "") -> inner remaining
         (matched, remaining) -> yield matched >> inner (B.drop 2 remaining)
 
-sink :: (Monad m, MonadIO m) => TwitterKey ->  [Handler] -> Response () -> ConduitM B.ByteString Void m ()
-sink key handlers response =
+sink :: (Monad m, MonadIO m) => TwitterKey -> S.SongBase ->
+                                [Handler] -> Response () -> ConduitM B.ByteString Void m ()
+sink key song_base handlers response =
   if getResponseStatusCode response > 300 then
     liftIO $ print "error"
   else do
@@ -98,20 +118,25 @@ sink key handlers response =
       Just d ->
         let
           obj = decode . LB.fromStrict $ d
-        in (liftIO $ forM_ handlers (\h -> h key obj)) >> sink key handlers response
+          prop = HandlerProp obj key song_base
+        in (liftIO $ forM_ handlers (\h -> runReaderT h prop)) >> sink key song_base handlers response
 
 
 main :: IO ()
 main = do
   json_path <- head <$> getArgs
-  print json_path
-  let url = "https://userstream.twitter.com/1.1/user.json"
-  let param = [("replies", "all")]
-  key <- TwitterKey <$> (getEnv "CK") <*> (getEnv "CS") <*> (getEnv "AT") <*> (getEnv "AS")
-  let handlers = [handler, replyHandler, followBackHandler]
-  request <- createRequest False url param [] key
-  httpSink request $ \res -> splitter .| (sink key handlers res)
-  print "done"
+  songs_json <- B.readFile json_path
+  let song_base_e = S.createSongs songs_json >>= return . S.createSongBase
+  case song_base_e of
+    Left err -> putStrLn err
+    Right song_base -> do
+      let url = "https://userstream.twitter.com/1.1/user.json"
+      let param = [("replies", "all")]
+      key <- TwitterKey <$> (getEnv "CK") <*> (getEnv "CS") <*> (getEnv "AT") <*> (getEnv "AS")
+      let handlers = [handler, replyHandler, followBackHandler]
+      request <- createRequest False url param [] key
+      httpSink request $ \res -> splitter .| (sink key song_base handlers res)
+      print "done"
 
 
 
