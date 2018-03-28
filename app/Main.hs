@@ -18,14 +18,11 @@ import Data.Aeson.Types
 import qualified Data.Text as T
 import Data.Foldable (forM_)
 import Operation
+import Data.Maybe
 
 type Handler = TwitterKey ->  Maybe Object -> IO ()
 
 name = "Keck_init"
-
-takeString :: Value -> Maybe String
-takeString (String s) = Just . T.unpack $ s
-takeString _ = Nothing
 
 handler :: Handler
 handler _ d = case tweet of
@@ -35,16 +32,30 @@ handler _ d = case tweet of
     tweet = d >>= HM.lookup "text" >>= takeString
 
 replyHandler :: Handler
-replyHandler _ d = do
+replyHandler key d = do
   case reply_text of
     Just s -> putStrLn s
     Nothing -> return ()
+  case d of
+    Just obj ->
+      if is_reply_to_me then
+        reply key obj "got replied" >> return ()
+      else
+        return ()
+    Nothing -> return ()
+
     where
-      reply_text = do
+      is_reply_to_me_m =  do
         obj <- d
         screen_name <- HM.lookup "in_reply_to_screen_name" obj >>= takeString
+        if screen_name == name then return True else return False
+
+      is_reply_to_me = fromMaybe False is_reply_to_me_m
+
+      reply_text = do
+        obj <- d
         tweet <- HM.lookup "text" obj >>= takeString
-        if screen_name == name then return () else Nothing
+        if is_reply_to_me then return () else Nothing
         return $ "reply!!!! tweet:" <> tweet
 
 followBackHandler :: Handler
