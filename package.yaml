@@ -34,6 +34,9 @@ library:
     - http-conduit
     - mtl
     - aeson
+    - unordered-containers
+    - text
+    - utf8-string
 
 executables:
   haskell-jsession-bot-exe:
