@@ -11,6 +11,7 @@ import qualified Data.ByteString.Char8 as CB
 import qualified Data.ByteString.Base64  as B64 (encode)
 import Network.HTTP.Simple
 import Control.Monad.State.Lazy
+import qualified Data.ByteString.UTF8 as UB
 
 data TwitterKey = TwitterKey {consumerKey :: String,
                               consumerSecret :: String,
@@ -73,7 +74,7 @@ createRequest is_post url query_param post_param key = do
         modify $ addRequestHeader "Authorization" $ CB.pack auth_header
         modify $ setRequestQueryString bs_query_param
         if is_post then
-          modify $ setRequestBodyURLEncoded [(CB.pack f, CB.pack $ s) | (f, s) <- post_param]
+          modify $ setRequestBodyURLEncoded [(UB.fromString f, UB.fromString $ s) | (f, s) <- post_param]
         else
           return ()
 
