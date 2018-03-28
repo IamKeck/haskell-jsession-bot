@@ -54,6 +54,7 @@ executables:
     - aeson
     - unordered-containers
     - text
+    - mtl
 
 
 tests:
