@@ -23,10 +23,6 @@ type Handler = TwitterKey ->  Maybe Object -> IO ()
 
 name = "Keck_init"
 
-takeString :: Value -> Maybe String
-takeString (String s) = Just . T.unpack $ s
-takeString _ = Nothing
-
 handler :: Handler
 handler _ d = case tweet of
   Nothing -> return ()

@@ -6,6 +6,15 @@ import Network.HTTP.Simple
 data CreateFriendship = CreateFriendship {screenName :: Maybe String, userId :: Maybe String, follow :: Maybe Bool}
   deriving Show
 
+
+takeString :: Value -> Maybe String
+takeString (String s) = Just . T.unpack $ s
+takeString _ = Nothing
+
+takeObj :: Value -> Maybe Object
+takeObj (Object o) = Just o
+takeObj _ = Nothing
+
 followUser :: TwitterKey -> String -> IO Bool
 followUser key user = do
   let url = "https://api.twitter.com/1.1/friendships/create.json"
