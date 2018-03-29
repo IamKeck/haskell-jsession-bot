@@ -96,22 +96,21 @@ splitter = inner "" where
 
 sink :: (Monad m, MonadIO m) => TwitterKey -> S.SongBase ->
                                 [Handler] -> Response () -> ConduitM B.ByteString Void m ()
-sink key song_base handlers response =
-  if getResponseStatusCode response > 300 then
-    liftIO $ print "error"
-  else do
-    b <- await
-    case b of
-      Nothing -> return ()
-      Just d ->
-          case decode . LB.fromStrict $ d of
-            Just o ->
-              let
-                prop = HandlerProp o key song_base
-              in
-                (liftIO $ forM_ handlers (\h -> runReaderT h prop)) >>
-                sink key song_base handlers response
-            _ -> sink key song_base handlers response
+sink key song_base handlers response
+  | getResponseStatusCode response > 300 = liftIO $ print "error"
+  | otherwise = do
+      let next = sink key song_base handlers response
+      b <- await
+      case b of
+        Nothing -> return ()
+        Just d ->
+            case decode . LB.fromStrict $ d of
+              Just o ->
+                let
+                  prop = HandlerProp o key song_base
+                in
+                  (liftIO $ forM_ handlers (\h -> runReaderT h prop)) >> next
+              _ -> next
 
 main :: IO ()
 main = do
