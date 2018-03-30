@@ -19,23 +19,13 @@ import qualified Data.Text as T
 import Data.Foldable (forM_)
 import Operation
 import Data.Maybe
-import Control.Monad.Reader
+import Handler
 import qualified Songs as S
+import Control.Monad.Reader
 
-data HandlerProp = HandlerProp {getData :: Object, getKey :: TwitterKey,
-                                getSongBase :: S.SongBase}
-type Handler = ReaderT HandlerProp IO ()
 
 name = "jsession_bot"
 
-askData :: ReaderT HandlerProp IO (Object)
-askData =  getData <$> ask
-
-askKey :: ReaderT HandlerProp IO (TwitterKey)
-askKey =  getKey <$> ask
-
-askSongBase :: ReaderT HandlerProp IO (S.SongBase)
-askSongBase =  getSongBase <$> ask
 
 handler :: Handler
 handler = do
