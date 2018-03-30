@@ -37,6 +37,7 @@ library:
     - unordered-containers
     - text
     - utf8-string
+    - conduit
 
 executables:
   haskell-jsession-bot-exe:

@@ -74,34 +74,6 @@ followBackHandler = do
           _ -> Nothing
 
 
-splitter :: ConduitM B.ByteString B.ByteString IO ()
-splitter = inner "" where
-  inner buf = do
-    md <- await
-    case md of
-      Nothing -> return ()
-      Just d -> case CB.breakSubstring (CB.pack "\r\n") (buf <> d) of
-        (remaining, "") -> inner remaining
-        (matched, remaining) -> yield matched >> inner (B.drop 2 remaining)
-
-sink :: (Monad m, MonadIO m) => TwitterKey -> S.SongBase ->
-                                [Handler] -> Response () -> ConduitM B.ByteString Void m ()
-sink key song_base handlers response
-  | getResponseStatusCode response > 300 = liftIO $ print "error"
-  | otherwise = do
-      let next = sink key song_base handlers response
-      b <- await
-      case b of
-        Nothing -> return ()
-        Just d ->
-            case decode . LB.fromStrict $ d of
-              Just o ->
-                let
-                  prop = HandlerProp o key song_base
-                in
-                  (liftIO $ forM_ handlers (\h -> runReaderT h prop)) >> next
-              _ -> next
-
 main :: IO ()
 main = do
   json_path <- head <$> getArgs
@@ -110,12 +82,9 @@ main = do
   case song_base_e of
     Left err -> putStrLn err
     Right song_base -> do
-      let url = "https://userstream.twitter.com/1.1/user.json"
-      let param = [("replies", "all")]
       key <- TwitterKey <$> (getEnv "CK") <*> (getEnv "CS") <*> (getEnv "AT") <*> (getEnv "AS")
       let handlers = [handler, replyHandler, followBackHandler]
-      request <- createRequest False url param [] key
-      httpSink request $ \res -> splitter .| (sink key song_base handlers res)
+      connectUserStream song_base key [("replies", "all")] handlers
       print "done"
 
 
