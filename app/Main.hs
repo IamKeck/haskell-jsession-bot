@@ -27,14 +27,6 @@ import Control.Monad.Reader
 name = "jsession_bot"
 
 
-handler :: Handler
-handler = do
-  d <- askData
-  let tweet = Just d >>= HM.lookup "text" >>= takeString
-  case tweet of
-    Nothing -> return ()
-    Just t -> liftIO . putStrLn $ "tweet:" <> t
-
 replyHandler :: Handler
 replyHandler = do
   d <- askData
@@ -83,7 +75,7 @@ main = do
     Left err -> putStrLn err
     Right song_base -> do
       key <- TwitterKey <$> (getEnv "CK") <*> (getEnv "CS") <*> (getEnv "AT") <*> (getEnv "AS")
-      let handlers = [handler, replyHandler, followBackHandler]
+      let handlers = [replyHandler, followBackHandler]
       connectUserStream song_base key [("replies", "all")] handlers
       print "done"
 
