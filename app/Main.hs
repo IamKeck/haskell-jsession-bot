@@ -39,11 +39,10 @@ replyHandler = do
     return ()
 
   where
-    is_reply_to_me_m obj = do
+    is_reply_to_me obj = fromMaybe False $ do
       screen_name <- HM.lookup "in_reply_to_screen_name" obj >>= takeString
       if screen_name == name then return True else return False
 
-    is_reply_to_me = fromMaybe False . is_reply_to_me_m
 
 followBackHandler :: Handler
 followBackHandler = do
