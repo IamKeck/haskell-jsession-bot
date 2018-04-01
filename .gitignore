@@ -3,3 +3,4 @@ haskell-jsession-bot.cabal
 *~
 .idea
 *.iml
+out/
