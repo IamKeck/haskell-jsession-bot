@@ -38,6 +38,8 @@ library:
     - text
     - utf8-string
     - conduit
+    - lens-aeson
+    - lens
 
 executables:
   haskell-jsession-bot-exe:

@@ -15,18 +15,12 @@ import qualified Data.ByteString as B
 import qualified Data.ByteString.Lazy as LB
 import Data.Conduit (Sink, await, yield, ConduitM, Void, (.|))
 import Data.Monoid ((<>))
+import Tweet
+import Data.Aeson.Lens
 
 data CreateFriendship = CreateFriendship {screenName :: Maybe String, userId :: Maybe String, follow :: Maybe Bool}
   deriving Show
 
-
-takeString :: Value -> Maybe String
-takeString (String s) = Just . T.unpack $ s
-takeString _ = Nothing
-
-takeObj :: Value -> Maybe Object
-takeObj (Object o) = Just o
-takeObj _ = Nothing
 
 followUser :: TwitterKey -> String -> IO Bool
 followUser key user = do
@@ -39,10 +33,10 @@ followUser key user = do
   else
     return True
 
-reply :: TwitterKey -> Object -> String -> IO Bool
-reply key obj message = do
+reply :: TwitterKey -> Value -> String -> IO Bool
+reply key tweet message = do
   case create_reply of
-    Nothing -> print obj >> return False
+    Nothing -> print tweet >> return False
     Just reply -> do
       res <- reply >>= httpBS
       if getResponseStatusCode res > 300 then
@@ -52,8 +46,8 @@ reply key obj message = do
   where
     create_reply = do
       let url = "https://api.twitter.com/1.1/statuses/update.json"
-      status_id <- HM.lookup "id_str" obj >>= takeString
-      screen_name <-  HM.lookup "user" obj >>= takeObj >>= HM.lookup "screen_name" >>= takeString
+      status_id <- getStatusId tweet
+      screen_name <- getScreenName tweet
       let reply_message = "@" ++ screen_name ++ " " ++ message
       let param = [("status", reply_message), ("in_reply_to_status_id", status_id)]
       return $ createRequest True url [] param key

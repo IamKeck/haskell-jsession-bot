@@ -6,11 +6,11 @@ import qualified Songs as S
 
 import OAuth
 
-data HandlerProp = HandlerProp {getData :: Object, getKey :: TwitterKey,
+data HandlerProp = HandlerProp {getData :: Value, getKey :: TwitterKey,
                                 getSongBase :: S.SongBase}
 type Handler = ReaderT HandlerProp IO ()
 
-askData :: ReaderT HandlerProp IO (Object)
+askData :: ReaderT HandlerProp IO (Value)
 askData =  getData <$> ask
 
 askKey :: ReaderT HandlerProp IO (TwitterKey)

@@ -22,26 +22,20 @@ import Data.Maybe
 import Handler
 import qualified Songs as S
 import Control.Monad.Reader
-
+import Tweet
 
 name = "jsession_bot"
-
 
 replyHandler :: Handler
 replyHandler = do
   d <- askData
   key <- askKey
-  if is_reply_to_me d then do
+  if isReplyToMe name d then do
     chosen_song <- askSongBase >>= liftIO . S.chooseSongIO
     (liftIO . reply key d $ "次は" ++ chosen_song ++ "なんていかがでしょうか")
     return ()
   else
     return ()
-
-  where
-    is_reply_to_me obj = fromMaybe False $ do
-      screen_name <- HM.lookup "in_reply_to_screen_name" obj >>= takeString
-      if screen_name == name then return True else return False
 
 
 followBackHandler :: Handler
@@ -52,17 +46,13 @@ followBackHandler = do
     Just s -> (liftIO . putStrLn $ "followed!:" <> s) >> (liftIO $ followUser key s)
               >> return ()
     Nothing -> return ()
-    where
-      follower obj = do
-        event_name <- HM.lookup "event" obj >>= takeString
-        if event_name == "follow" then Just () else Nothing
-        followed_user <- case HM.lookup "target" obj of
-          Just (Object o) -> HM.lookup "screen_name" o >>= takeString
-          _ -> Nothing
-        if followed_user == name then Just () else Nothing
-        case HM.lookup "source" obj of
-          Just (Object o) -> HM.lookup "id_str" o >>= takeString
-          _ -> Nothing
+  where
+    follower d = do
+      event_name <- getEventName d
+      if event_name == "follow" then Just () else Nothing
+      followed_user <- getEventTargetName d
+      if followed_user == name then Just () else Nothing
+      getEventSourceId d
 
 
 main :: IO ()
