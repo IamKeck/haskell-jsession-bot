@@ -7,7 +7,6 @@ import qualified Data.HashMap.Strict as HM
 import Data.Aeson (decode)
 import Data.Aeson.Types
 import Control.Monad.Reader
-import qualified Data.Text as T
 import qualified Songs as S
 import Handler
 import qualified Data.ByteString.Char8 as CB

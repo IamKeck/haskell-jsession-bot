@@ -2,26 +2,14 @@
 module Main where
 
 import OAuth
-import Network.HTTP.Simple
 import System.Environment
-import qualified Data.ByteString.Char8 as CB
 import qualified Data.ByteString as B
-import qualified Data.ByteString.Lazy as LB
-import Data.Conduit (Sink, await, yield, ConduitM, Void, (.|))
-import Control.Monad.IO.Class (MonadIO, liftIO)
+import Control.Monad.IO.Class (liftIO)
 import Data.Monoid ((<>))
-import Data.Word
-import Debug.Trace
-import qualified Data.HashMap.Strict as HM
-import Data.Aeson (decode)
-import Data.Aeson.Types
-import qualified Data.Text as T
-import Data.Foldable (forM_)
 import Operation
-import Data.Maybe
+import Data.Maybe (fromMaybe)
 import Handler
 import qualified Songs as S
-import Control.Monad.Reader
 import Tweet
 
 name = "jsession_bot"
